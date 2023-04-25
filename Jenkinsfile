@@ -1,8 +1,10 @@
 pipeline {
     agent any
     tools {
-        maven "m3"
-    }
+            maven "m3"
+            'org.jenkinsci.plugins.docker.commons.tools.DockerTool' "docker"
+        }
+
     stages {
         stage ('git') {
             steps {
