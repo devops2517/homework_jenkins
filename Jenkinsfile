@@ -1,16 +1,18 @@
 pipeline {
-    agent { label 'build' }
-
+    agent any
+    tools {
+        maven "m3"
+    }
     stages {
-        stage('Clone repository') {
+        stage ('git') {
             steps {
-                checkout git: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
+                git: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
             }
         }
 
-        stage('Build WAR package') {
+        stage('build'') {
             steps {
-                sh './mvnw package -DskipTests=true'
+                sh 'mvn package'
             }
             post {
                 success {
