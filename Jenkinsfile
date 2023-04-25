@@ -6,11 +6,11 @@ pipeline {
     stages {
         stage ('git') {
             steps {
-                git: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
+                git 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
             }
         }
 
-        stage('build) {
+        stage('build') {
             steps {
                 sh 'mvn package'
             }
