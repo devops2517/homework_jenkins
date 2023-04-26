@@ -21,12 +21,11 @@ pipeline {
                     archiveArtifacts 'target/*.war'
                 }
             }
-
         }
 
         stage('dockerfile') {
             steps {
-                 git branch: 'main', url: 'https://github.com/devops2517/homework_jenkins.git'
+                 git 'https://github.com/devops2517/homework_jenkins.git'
                    }
         }
 
