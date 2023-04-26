@@ -6,13 +6,13 @@ pipeline {
         }
 
     stages {
-        stage ('git') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git'
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/boxfuse/boxfuse-sample-java-war-hello.git']]])
             }
         }
 
-        stage('build') {
+        stage('Build') {
             steps {
                 sh 'mvn package'
             }
@@ -23,21 +23,22 @@ pipeline {
             }
         }
 
-        stage('dockerfile') {
+        stage('Docker build and push') {
             steps {
-                 git 'https://github.com/devops2517/homework_jenkins.git'
-                   }
-        }
-
-        stage('Build Docker image') {
-            steps {
-                sh 'docker build -t devops2517/homework_jenkins:latest .'
-            }
-
-            post {
-                success {
+                withDockerRegistry([credentialsId: 'dockerhub', url: 'https://registry.hub.docker.com']) {
+                    sh 'docker build -t devops2517/homework_jenkins:latest .'
                     sh 'docker push devops2517/homework_jenkins:latest'
                 }
+            }
+        }
+
+        stage('Deploy') {
+            environment {
+                TAG = 'devops2517/homework_jenkins:latest'
+            }
+            steps {
+                sh 'docker pull $TAG'
+                sh 'docker run -p 8080:8080 $TAG'
             }
         }
     }
