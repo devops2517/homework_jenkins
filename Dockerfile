@@ -1,6 +1,6 @@
 FROM maven:3.8.1-jdk-11
 
-WORKDIR /usr/src/apptarget/
+WORKDIR /usr/src/app/target/
 
 COPY pom.xml ./
 RUN mvn -B -e -C -T 1C -DskipTests=true dependency:resolve
