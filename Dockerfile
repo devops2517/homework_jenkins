@@ -1,9 +1,7 @@
-FROM maven:3.6.3-jdk-8-slim
+FROM tomcat:jdk8-openjdk-slim
 
-WORKDIR /app
+COPY target/*.war /usr/local/tomcat/webapps/
 
-COPY . .
+EXPOSE 8080
 
-RUN mvn package
-
-CMD ["java", "-jar", "target/nanotwitter.jar"]
+CMD ["catalina.sh", "run"]
