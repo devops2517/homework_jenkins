@@ -1,11 +1,7 @@
-FROM maven:3.8.1-jdk-11
+FROM tomcat:jdk8-openjdk-slim
 
-WORKDIR /usr/src/app/target/
+COPY target/*.war /usr/local/tomcat/webapps/
 
-COPY pom.xml ./
-RUN mvn -B -e -C -T 1C -DskipTests=true dependency:resolve
+EXPOSE 8080
 
-COPY src ./src
-RUN mvn -B -e -o -C -T 1C clean package
-
-ENTRYPOINT ["mvn", "jetty:run"]
+CMD ["catalina.sh", "run"]
